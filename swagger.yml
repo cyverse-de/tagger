@@ -1,0 +1,45 @@
+consumes:
+  - "application/json"
+definitions:
+  service-info:
+    type: object
+    required:
+      - "description"
+      - "service"
+      - "version"
+    properties:
+      description:
+        type: "string"
+        description: "A brief description of the service."
+        minLength: 1
+      service:
+        type: "string"
+        description: "The name of the service."
+        minLength: 1
+      version:
+        type: "string"
+        description: "The service's version number."
+        minLength: 1
+info:
+  description: "Creates, updates, and deletes tags in an ElasticSearch index."
+  title: "Tag Registration Service"
+  version: "1.0.0.0"
+paths:
+  /:
+    get:
+      tags:
+        - "status"
+      summary: "Service Status Information"
+      description: >-
+        Displays general infrormation about the service and can be used to determine whether or not the service is
+        running.
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/service-info"
+produces:
+  - "application/json"
+schemes:
+  - "http"
+swagger: "2.0"
