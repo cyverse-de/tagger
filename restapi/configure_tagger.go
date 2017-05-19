@@ -24,7 +24,8 @@ import (
 
 // Command line options that aren't managed by go-swagger.
 var options struct {
-	ShowVersion bool `short:"v" long:"version" description:"Print the app version and exit"`
+	CfgPath     string `long:"config" default:"/etc/iplant/de/tagger.yaml" description:"The path to the config file"`
+	ShowVersion bool   `short:"v" long:"version" description:"Print the app version and exit"`
 }
 
 func configureFlags(api *operations.TaggerAPI) {
