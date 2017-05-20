@@ -4,11 +4,11 @@ import (
 	"crypto/tls"
 	"net/http"
 	"os"
-	"strings"
 
 	version "github.com/cyverse-de/version"
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
+	middleware "github.com/go-openapi/runtime/middleware"
 	swag "github.com/go-openapi/swag"
 	graceful "github.com/tylerb/graceful"
 
@@ -88,20 +88,5 @@ func setupMiddlewares(handler http.Handler) http.Handler {
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json
 // document.  So this is a good place to plug in a panic handling middleware, logging and metrics
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
-	return uiMiddleware(handler)
-}
-
-// The middleware to serve up the interactive Swagger UI.
-func uiMiddleware(handler http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/docs" {
-			http.Redirect(w, r, "/docs/", http.StatusFound)
-			return
-		}
-		if strings.Index(r.URL.Path, "/docs/") == 0 {
-			http.StripPrefix("/docs/", http.FileServer(http.Dir("docs"))).ServeHTTP(w, r)
-			return
-		}
-		handler.ServeHTTP(w, r)
-	})
+	return middleware.Redoc(middleware.RedocOpts{}, handler)
 }

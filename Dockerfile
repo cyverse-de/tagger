@@ -6,15 +6,6 @@ ENV PROGRAM=tagger
 
 COPY . /go/src/github.com/cyverse-de/tagger/
 
-RUN git clone https://github.com/swagger-api/swagger-ui.git /tmp/swagger-ui \
-    && cd /tmp/swagger-ui \
-    && git checkout v2.2.10 \
-    && mkdir -p /docs \
-    && cp -pr dist/* /docs/ \
-    && cd / \
-    && rm -rf /tmp/swagger-ui \
-    && cp /go/src/github.com/cyverse-de/tagger/index.html /docs/index.html
-
 RUN go install github.com/cyverse-de/tagger/... \
     && cp /go/bin/tagger-server /bin/tagger
 
